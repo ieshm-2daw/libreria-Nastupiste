@@ -63,3 +63,4 @@ libro prestado, la fecha de préstamo, la fecha de devolución, el usuario que l
 
 class Prestamo(models.Model):
     libroPrestado=models.ForeignKey(Libro,on_delete=)
+    hola
