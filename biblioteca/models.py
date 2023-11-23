@@ -66,3 +66,4 @@ class Prestamo(models.Model):
     fechaPrestamo=models.DateField()
     fechaDevolucion=models.DateField()
     usuario=models.ForeignKey(Usuario,on_delete=)
+    
