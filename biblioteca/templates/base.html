@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Biblioteca Nastuel</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.classless.min.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li>
+            <strong><strong>Biblioteca Nastuel</strong></strong>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <a href="{% url 'anadir_libro' %}" role="button">Añadir Libro</a>
+          </li>
+          <li>
+            <a href="{% url 'lista_libros' %}" role="button">Listar Libros</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>{% block content %} {% endblock %}</main>
+  </body>
+</html>

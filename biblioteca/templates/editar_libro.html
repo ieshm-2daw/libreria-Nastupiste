@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Bienvenido a Biblioteca Nastuel</h1>
+<h2>Modificar la información de un libro en la Base de datos</h2>
+<form action="{% url 'editar_libro' pk=libro.pk  %}" method="post">
+  <article>
+    {% csrf_token %} {{ form.as_p }}
+    <button type="submit">Aceptar modificación</button>
+    <a href="{% url 'lista_libros' %}" role="button">Volver al listado</a>
+  </article>
+</form>
+{% endblock %}

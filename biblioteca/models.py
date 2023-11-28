@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Model, CASCADE
 
 
 # Create your models here.
@@ -10,13 +11,13 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 """
 
 
-class Usuario(AbstractUser, models.Model):
-    dni = models.CharField()
-    direccion = models.CharField()
-    telefono = models.PositiveBigIntegerField()
+class Usuario(AbstractUser):
+    dni = models.CharField(max_length=10, unique=True)
+    direccion = models.CharField(max_length=200)
+    telefono = models.PositiveBigIntegerField(null=True)
 
     def __str__(self):
-        return self.dni
+        return self.username
 
 
 """
@@ -25,9 +26,9 @@ class Usuario(AbstractUser, models.Model):
 
 
 class Autor(models.Model):
-    nombre = models.CharField(max_length=150).primary_key
+    nombre = models.CharField(max_length=100)
     biografia = models.TextField()
-    foto = models.ImageField()
+    foto = models.ImageField(upload_to='autores/', null=True, blank=True)
 
     def __str__(self):
         return self.nombre
@@ -39,8 +40,8 @@ class Autor(models.Model):
 
 
 class Editorial(models.Model):
-    nombre = models.CharField(max_length=150)
-    direccion = models.CharField(max_length=250)
+    nombre = models.CharField(max_length=100)
+    direccion = models.CharField(max_length=200)
     sitioWeb = models.URLField()
 
     def __str__(self):
@@ -55,17 +56,27 @@ en proceso de préstamo), portada, etc.
 
 
 class Libro(models.Model):
-    titulo = models.CharField(max_length=150).primary_key
-    autores = models.ForeignKey(Autor, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=200)
+    autores = models.ManyToManyField(Autor)
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
     fechaPublicacion = models.DateField()
     genero = models.CharField(max_length=100)
     isbn = models.IntegerField(validators=[MinValueValidator(
         1000000000000), MaxValueValidator(9999999999999)])
     resumen = models.TextField()
-    disponibilidad = models.CharField(
-        choices=["Disponible", "Prestado", "En Proceso de Préstamo"])
-    portada = models.ImageField()
+    portada = models.ImageField(upload_to='portadas/', null=True, blank=True)
+
+    DISPONIBILIDAD = (
+        ('disponible', 'Disponible'),
+        ('prestado', 'Prestado'),
+        ('en_proceso', 'En Proceso de Préstamo'),
+    )
+
+    disponibilidad = models.CharField(max_length=20, choices=DISPONIBILIDAD)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.titulo
@@ -81,9 +92,13 @@ libro prestado, la fecha de préstamo, la fecha de devolución, el usuario que l
 class Prestamo(models.Model):
     libroPrestado = models.ForeignKey(Libro, on_delete=models.CASCADE)
     fechaPrestamo = models.DateField()
-    fechaDevolucion = models.DateField()
+    fechaDevolucion = models.DateField(null=True, blank=True)
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    estado = models.CharField(choices=['Prestado', 'Devuelto'])
+
+    ESTADO = ((('prestado', 'Prestado'), ('devuelto', 'Devuelto')))
+
+    estado = models.CharField(
+        max_length=20, choices=ESTADO, default='prestado')
 
     def __str__(self):
-        return self.estado
+        return f"Préstamo de {self.libroPrestado} a {self.usuario}"

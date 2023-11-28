@@ -1,0 +1,9 @@
+{% extends 'base.html' %} {% block content %}
+<h3>Éstos son los libros disponibles:</h3>
+{% for libro in libro_list %}
+<article>
+  <h4><b>Título: </b> {{ libro.titulo }}</h4>
+  <br />
+  <a href="{% url 'detalle' pk=libro.pk %}" role="button">Ver detalles</a>
+</article>
+{% endfor %} {% endblock %}

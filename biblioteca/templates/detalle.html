@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Detalles del Libro:</h1>
+<article>
+  <h5><b>Título: </b>{{libro.titulo}}</h5>
+  <p><b>Autores: </b>{{libro.autores}}</p>
+  <p><b>Editorial: </b>{{libro.editorial}}</p>
+  <p><b>Libro: </b>{{libro.rating}}</p>
+  <p><b>Fecha publicación: </b>{{libro.fechaPublicacion}}</p>
+  <p><b>Género: </b>{{libro.genero}}</p>
+  <p><b>ISBN: </b>{{libro.isbn}}</p>
+  <p><b>Resumen: </b>{{libro.resumen}}</p>
+  <p><b>Estado: </b>{{libro.disponibilidad}}</p>
+  <p>{{libro.portada}}</p>
+  <a href="{% url 'editar_libro' pk=libro.pk %}" role="button">Editar info</a>
+  <a href="{% url 'borrar_libro' pk=libro.pk %}" role="button">Eliminar</a>
+  <a href="{% url 'lista_libros' %}" role="button">Volver a Listado</a>
+</article>
+{% endblock %}

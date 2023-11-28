@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Bienvenido a Biblioteca Nastuel</h1>
+<h2>Eliminar un libro de la Base de datos:</h2>
+<form method="post">
+  {% csrf_token %}
+  <dialog open>
+    <article>
+      <h4>¿Seguro que quieres borrar este libro?</h4>
+      <br />
+      {{ libro.titulo }} <br />
+      {{ form }}
+      <input type="submit" value="Confirmar Borrado" />
+      <a href="{% url 'detalle' pk=libro.pk %}" role="button" class="secondary">Cancelar</a>
+    </article>
+  </dialog>
+</form>
+{% endblock %}
