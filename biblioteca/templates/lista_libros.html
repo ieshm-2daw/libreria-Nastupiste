@@ -6,4 +6,6 @@
   <br />
   <a href="{% url 'detalle' pk=libro.pk %}" role="button">Ver detalles</a>
 </article>
+{% empty %}
+<article>No hay Libros registrados</article>
 {% endfor %} {% endblock %}

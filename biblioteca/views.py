@@ -29,7 +29,7 @@ class ActualizarLibro(UpdateView):
     template_name = 'editar_libro.html'
     fields = ['titulo', 'autores', 'editorial', 'rating', 'fechaPublicacion',
               'genero', 'isbn', 'resumen', 'disponibilidad', 'portada']
-    success_url = reverse_lazy('detalle')
+    success_url = reverse_lazy('lista_libros')
 
 
 class BorrarLibro(DeleteView):
