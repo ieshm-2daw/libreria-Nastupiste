@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import *
@@ -9,6 +10,16 @@ from django .urls import reverse_lazy
 class ListaLibros(ListView):
     model = Libro
     template_name = 'lista_libros.html'
+
+# queryset=Libro.objects.filter(disponibilidad='disponible')
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['libros_disponibles'] = Libro.objects.filter(
+            disponibilidad='disponible')
+        context['libros_prestados'] = Libro.objects.filter(
+            disponibilidad='prestado')
+        return context
 
 
 class CrearLibro(CreateView):

@@ -1,9 +1,25 @@
 {% extends 'base.html' %} {% block content %}
 <h3>Éstos son los libros disponibles:</h3>
-{% for libro in libro_list %}
+{% for libro in libros_disponibles %}
 <article>
-  <h4><b>Título: </b> {{ libro.titulo }}</h4>
-  <br />
+  <h6><b>Título: </b> {{ libro.titulo }}</h6>
+  {% if libro.portada %}
+  <img src="{{ libro.portada.url }}" />
+  {% endif %}
+  <br /><br />
+  <a href="{% url 'detalle' pk=libro.pk %}" role="button">Ver detalles</a>
+</article>
+{% empty %}
+<article>No hay Libros registrados</article>
+{% endfor %}
+<h3>Éstos son los libros prestados:</h3>
+{% for libro in libros_prestados %}
+<article>
+  <h6><b>Título: </b> {{ libro.titulo }}</h6>
+  {% if libro.portada %}
+  <img src="{{ libro.portada.url }}" />
+  {% endif %}
+  <br /><br />
   <a href="{% url 'detalle' pk=libro.pk %}" role="button">Ver detalles</a>
 </article>
 {% empty %}
