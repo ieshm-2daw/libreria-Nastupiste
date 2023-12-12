@@ -14,7 +14,11 @@
   <img src="{{ libro.portada.url }}" />
   {% endif %}
   <br /><br />
+  {% if libro.disponibilidad == 'disponible' %}
   <a href="{% url 'reservar_libro' pk=libro.pk %}" role="button">Reservar</a>
+  {% else %}
+  <a href="{% url 'devolver_libro' pk=libro.pk %}" role="button">Devolver</a>
+  {% endif %}
   <a href="{% url 'editar_libro' pk=libro.pk %}" role="button">Editar info</a>
   <a href="{% url 'borrar_libro' pk=libro.pk %}" role="button">Eliminar</a>
   <a href="{% url 'lista_libros' %}" role="button">Volver a Listado</a>

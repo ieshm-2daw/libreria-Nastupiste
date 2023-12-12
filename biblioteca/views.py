@@ -23,6 +23,31 @@ class ListaLibros(ListView):
         return context
 
 
+class ListaMisLibros(ListView):
+    model = Libro
+    template_name = 'mis_libros.html'
+    queryset = Libro.objects.filter(disponibilidad='prestado')
+
+
+class DevolverLibro(View):
+    def get(self, request, pk):
+        libro_prestado = get_object_or_404(Libro, pk=pk)
+        return render(request, 'devolver_libro.html', {'libro': libro_prestado})
+
+    def post(self, request, pk):
+        libro_prestado = get_object_or_404(Libro, pk=pk)
+        prestamo = get_object_or_404(Prestamo,
+                                     libroPrestado=libro_prestado, usuario=request.user, estado='prestado')
+        # Actualizar el estado del préstamos a devuelto:
+        prestamo.estado = 'devuelto'
+        prestamo.fechaDevolucion = date.today()
+        prestamo.save()
+        # Actualizar la disponibilidad del libro
+        libro_prestado.disponibilidad = 'disponible'
+        libro_prestado.save()
+        return redirect('detalle', pk=pk)
+
+
 class ReservarLibro(View):
     def get(self, request, pk):
         libro = get_object_or_404(Libro, pk=pk)

@@ -6,12 +6,12 @@
       {% csrf_token %} {{ form.as_p }}
       <h5><b>Título: </b>{{libro.titulo}}</h5>
       <p>
-        <b>Autores: {% for autor in libro.autores.all %} {{ autor.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}
+        <b>Autores: {% for autor in libro.autores.all %} {{ autor.nombre }}{% if not forloop.last %}, {% endif %} {% endfor %}
       </p>
       <p><b>Rating: </b>{{libro.rating}}</p>
       <br /><br />
-      <input type="submit" value="Confirmar Reserva" />
-      <a href="{% url 'detalle' pk=libro.pk %}" role="button" class="secondary">Cancelar</a>
+      <input type="submit" value="Confirmar Devolución" />
+      <a href="{% url 'mis_libros' %}" role="button" class="secondary">Cancelar</a>
     </article>
   </dialog>
 </form>
