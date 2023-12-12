@@ -1,5 +1,6 @@
+from datetime import date
 from typing import Any
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
 from .models import *
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
@@ -20,6 +21,23 @@ class ListaLibros(ListView):
         context['libros_prestados'] = Libro.objects.filter(
             disponibilidad='prestado')
         return context
+
+
+class ReservarLibro(View):
+    def get(self, request, pk):
+        libro = get_object_or_404(Libro, pk=pk)
+        return render(request, 'reservar_libro.html', {'libro': libro})
+
+    def post(self, request, pk):
+        libro = get_object_or_404(Libro, pk=pk)
+        libro.disponibilidad = 'prestado'
+        libro.save()
+        Prestamo.objects.create(
+            libroPrestado=libro,
+            fechaPrestamo=date.today(),
+            usuario=request.user,
+            estado='prestado')
+        return render(request, 'detalle.html', {'libro': libro})
 
 
 class CrearLibro(CreateView):

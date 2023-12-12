@@ -12,7 +12,7 @@ from django.db.models import Model, CASCADE
 
 
 class Usuario(AbstractUser):
-    dni = models.CharField(max_length=10, unique=True)
+    dni = models.CharField(max_length=10,unique=False)
     direccion = models.CharField(max_length=200)
     telefono = models.PositiveBigIntegerField(null=True)
 

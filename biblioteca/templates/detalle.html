@@ -2,7 +2,7 @@
 <h1>Detalles del Libro:</h1>
 <article>
   <h5><b>Título: </b>{{libro.titulo}}</h5>
-  <p><b>Autores: {% for autor in libro.autores.all %} {{ autor.nombre }}{% if not forloop.last %}, {% endif %} </b>{{libro.autores}}{% endfor %}</p>
+  <p><b>Autores: {% for autor in libro.autores.all %} {{ autor.nombre }}{% if not forloop.last %}, {% endif %} {% endfor %}</p>
   <p><b>Editorial: </b>{{libro.editorial}}</p>
   <p><b>Libro: </b>{{libro.rating}}</p>
   <p><b>Fecha publicación: </b>{{libro.fechaPublicacion}}</p>
@@ -14,6 +14,7 @@
   <img src="{{ libro.portada.url }}" />
   {% endif %}
   <br /><br />
+  <a href="{% url 'reservar_libro' pk=libro.pk %}" role="button">Reservar</a>
   <a href="{% url 'editar_libro' pk=libro.pk %}" role="button">Editar info</a>
   <a href="{% url 'borrar_libro' pk=libro.pk %}" role="button">Eliminar</a>
   <a href="{% url 'lista_libros' %}" role="button">Volver a Listado</a>

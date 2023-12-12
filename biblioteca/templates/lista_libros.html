@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<h3>Éstos son los libros disponibles:</h3>
+<h3>Libros disponibles:</h3>
 {% for libro in libros_disponibles %}
 <article>
   <h6><b>Título: </b> {{ libro.titulo }}</h6>
@@ -12,7 +12,7 @@
 {% empty %}
 <article>No hay Libros registrados</article>
 {% endfor %}
-<h3>Éstos son los libros prestados:</h3>
+<h3>Libros prestados:</h3>
 {% for libro in libros_prestados %}
 <article>
   <h6><b>Título: </b> {{ libro.titulo }}</h6>
