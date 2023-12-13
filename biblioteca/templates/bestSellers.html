@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% block content %}
+<h3>BestSellers:</h3>
+{% for libro in object_list %}
+<article>
+  <h6><b>Título: </b> {{ libro.titulo }}</h6>
+  {% if libro.portada %}
+  <img src="{{ libro.portada.url }}" />
+  {% endif %}
+  <br /><br />
+  <a href="{% url 'detalle' pk=libro.pk %}" role="button">Ver detalles</a>
+</article>
+{% empty %}
+<article>No hay Libros registrados</article>
+{% endfor %} {% endblock %}

@@ -59,6 +59,7 @@ class Libro(models.Model):
     titulo = models.CharField(max_length=200)
     autores = models.ManyToManyField(Autor)
     editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
+    bestSeller = models.BooleanField(default=False)
     rating = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)])
     fechaPublicacion = models.DateField()

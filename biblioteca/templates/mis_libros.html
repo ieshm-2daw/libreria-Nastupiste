@@ -1,14 +1,22 @@
 {% extends 'base.html' %} {% block content %}
-<h3>Mis Libros:</h3>
-{% for libro in object_list %}
+<h3>Libros que tienes prestados:</h3>
+{% for prestamo in libros_prestados %}
 <article>
-  <h6><b>Título: </b> {{ libro.titulo }}</h6>
-  {% if libro.portada %}
-  <img src="{{ libro.portada.url }}" />
-  {% endif %}
+  <h6><b>Título: </b> {{ prestamo.libroPrestado.titulo }}</h6>
+  <p>Fecha de Reserva: {{ prestamo.fechaPrestamo }}</p>
   <br /><br />
-  <a href="{% url 'detalle' pk=libro.pk %}" role="button">Ver detalles</a>
+  <a href="{% url 'detalle' pk=prestamo.libroPrestado.pk %}" role="button">Ver detalles</a>
 </article>
 {% empty %}
-<article>No has reservado ningún libro</article>
+<article>No tienes ningún libro préstado</article>
+{% endfor %}
+<h3>Libros que has devuelto:</h3>
+{% for prestamo in libros_devueltos %}
+<article>
+  <h6><b>Título: </b> {{ prestamo.libroPrestado.titulo }}</h6>
+  <p>Fecha de Reserva: {{ prestamo.fechaPrestamo }}</p>
+  <p>Fecha de Devolución: {{ prestamo.fechaDevolucion }}</p>
+</article>
+{% empty %}
+<article>No tienes ningún libro devuelto</article>
 {% endfor %} {% endblock %}

@@ -11,4 +11,5 @@ urlpatterns = [
     path('reservar/<int:pk>', ReservarLibro.as_view(), name='reservar_libro'),
     path('devolver/<int:pk>', DevolverLibro.as_view(), name='devolver_libro'),
     path('misLibros/', ListaMisLibros.as_view(), name='mis_libros'),
+    path('bestSellers/', ListaBestSellers.as_view(), name='bestSellers'),
 ]

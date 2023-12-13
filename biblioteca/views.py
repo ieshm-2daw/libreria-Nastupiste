@@ -22,11 +22,22 @@ class ListaLibros(ListView):
             disponibilidad='prestado')
         return context
 
+class ListaBestSellers(ListView):
+    model = Libro
+    template_name= 'bestSellers.html'
+    queryset= Libro.objects.filter(bestSeller=True)
 
 class ListaMisLibros(ListView):
-    model = Libro
+    model = Prestamo
     template_name = 'mis_libros.html'
-    queryset = Libro.objects.filter(disponibilidad='prestado')
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['libros_prestados'] = Prestamo.objects.filter(
+            usuario=self.request.user, estado='prestado')
+        context['libros_devueltos'] = Prestamo.objects.filter(
+            usuario=self.request.user, estado='devuelto')
+        return context
 
 
 class DevolverLibro(View):
@@ -68,7 +79,7 @@ class ReservarLibro(View):
 class CrearLibro(CreateView):
     model = Libro
     template_name = 'anadir_libro.html'
-    fields = ['titulo', 'autores', 'editorial', 'rating', 'fechaPublicacion',
+    fields = ['titulo', 'autores', 'editorial', 'bestSeller', 'rating', 'fechaPublicacion',
               'genero', 'isbn', 'resumen', 'disponibilidad', 'portada']
     success_url = reverse_lazy('lista_libros')
 
