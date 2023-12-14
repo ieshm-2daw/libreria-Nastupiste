@@ -22,10 +22,28 @@ class ListaLibros(ListView):
             disponibilidad='prestado')
         return context
 
+
 class ListaBestSellers(ListView):
     model = Libro
-    template_name= 'bestSellers.html'
-    queryset= Libro.objects.filter(bestSeller=True)
+    template_name = 'bestSellers.html'
+    queryset = Libro.objects.filter(bestSeller=True)
+
+
+class FiltrarCategorias(ListView):
+    model = Libro
+    template_name = 'filtroCategorias.html'
+
+    def get(self, request):
+        #queryset = Libro.objects.filter()
+        return render(request, 'filtroCategorias.html')
+
+    def post(self, request):
+        # categoriaSeleccionada = request.POST.get('opciones')
+        # aqui va el switch
+        self.queryset = Libro.objects.filter(genero="Misterio")
+
+        return redirect('filtroCategorias')
+
 
 class ListaMisLibros(ListView):
     model = Prestamo

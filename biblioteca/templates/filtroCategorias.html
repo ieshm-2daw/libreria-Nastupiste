@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block content %}
+<h3>Búsqueda por Categoría</h3>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <article>
+    <select id="opciones" name="opciones">
+      <option value="" disabled selected>Seleccione una categoría</option>
+      <option value="Novela histórica">Historia</option>
+      <option value="Terror">Terror</option>
+      <option value="Aventura, Fantasía">Aventura, Fantasía</option>
+      <option value="Misterio">Misterio</option>
+    </select>
+  </article>
+  <br />
+  <input type="submit" value="buscar libros" />
+</form>
+<h3>Libros encontrados:</h3>
+{% for libro in object_list %}
+<article>
+  <h6><b>Título: </b> {{ libro.titulo }}</h6>
+  <a href="{% url 'detalle' pk=libro.pk %}" role="button">Ver detalles</a>
+</article>
+{% empty %}
+<article>Sin resultados...</article>
+{% endfor %} {% endblock %}

@@ -12,4 +12,5 @@ urlpatterns = [
     path('devolver/<int:pk>', DevolverLibro.as_view(), name='devolver_libro'),
     path('misLibros/', ListaMisLibros.as_view(), name='mis_libros'),
     path('bestSellers/', ListaBestSellers.as_view(), name='bestSellers'),
+    path('busqueda/', FiltrarCategorias.as_view(), name='filtroCategorias'),
 ]
