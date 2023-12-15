@@ -1,10 +1,12 @@
 from datetime import date
 from typing import Any
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views import View
 from .models import *
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
 from django .urls import reverse_lazy
+from .forms import *
 # Create your views here.
 
 
@@ -32,17 +34,21 @@ class ListaBestSellers(ListView):
 class FiltrarCategorias(ListView):
     model = Libro
     template_name = 'filtroCategorias.html'
+    form_class = FiltroGeneroForm
+    queryset = Libro.objects.filter(disponibilidad='disponible')
 
-    def get(self, request):
-        #queryset = Libro.objects.filter()
-        return render(request, 'filtroCategorias.html')
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        categoriaSeleccionada = self.request.GET.get("opciones")
+        for genero_ID in Genero.objects.all():
+            if genero_ID.categoria == categoriaSeleccionada:
+                self.queryset = self.queryset.filter(
+                    genero=genero_ID)
+        return super().get(request, *args, **kwargs)
 
-    def post(self, request):
-        # categoriaSeleccionada = request.POST.get('opciones')
-        # aqui va el switch
-        self.queryset = Libro.objects.filter(genero="Misterio")
-
-        return redirect('filtroCategorias')
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['categorias'] = Genero.objects.all()
+        return context
 
 
 class ListaMisLibros(ListView):

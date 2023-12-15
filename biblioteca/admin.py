@@ -8,6 +8,7 @@ admin.site.register(Autor)
 admin.site.register(Prestamo)
 admin.site.register(Editorial)
 admin.site.register(Usuario)
+admin.site.register(Genero)
 
 """
 usurario = Nastupiste1

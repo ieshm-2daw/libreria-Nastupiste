@@ -12,7 +12,7 @@ from django.db.models import Model, CASCADE
 
 
 class Usuario(AbstractUser):
-    dni = models.CharField(max_length=10,unique=False)
+    dni = models.CharField(max_length=10, unique=False)
     direccion = models.CharField(max_length=200)
     telefono = models.PositiveBigIntegerField(null=True)
 
@@ -55,6 +55,13 @@ en proceso de préstamo), portada, etc.
 """
 
 
+class Genero(models.Model):
+    categoria = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.categoria
+
+
 class Libro(models.Model):
     titulo = models.CharField(max_length=200)
     autores = models.ManyToManyField(Autor)
@@ -63,7 +70,7 @@ class Libro(models.Model):
     rating = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)])
     fechaPublicacion = models.DateField()
-    genero = models.CharField(max_length=100)
+    genero = models.ManyToManyField(Genero)
     isbn = models.IntegerField(validators=[MinValueValidator(
         1000000000000), MaxValueValidator(9999999999999)])
     resumen = models.TextField()

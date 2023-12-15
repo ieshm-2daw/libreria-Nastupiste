@@ -6,7 +6,7 @@
   <p><b>Editorial: </b>{{libro.editorial}}</p>
   <p><b>Libro: </b>{{libro.rating}}</p>
   <p><b>Fecha publicación: </b>{{libro.fechaPublicacion}}</p>
-  <p><b>Género: </b>{{libro.genero}}</p>
+  <p><b>Género: </b>{% for genero in libro.genero.all %} {{ genero.categoria }}{% if not forloop.last %}, {% endif %} {% endfor %}</p>
   <p><b>ISBN: </b>{{libro.isbn}}</p>
   <p><b>Resumen: </b>{{libro.resumen}}</p>
   <p><b>Estado: </b>{{libro.disponibilidad}}</p>
