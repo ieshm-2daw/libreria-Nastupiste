@@ -38,11 +38,17 @@ class FiltrarCategorias(ListView):
     queryset = Libro.objects.filter(disponibilidad='disponible')
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+
         categoriaSeleccionada = self.request.GET.get("opciones")
         for genero_ID in Genero.objects.all():
             if genero_ID.categoria == categoriaSeleccionada:
                 self.queryset = self.queryset.filter(
                     genero=genero_ID)
+        """
+        categoria = Genero.objects.filter(
+            categoria=self.request.GET.get('opciones'))
+        self.queryset = self.queryset.filter(genero=categoria)
+        """
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
