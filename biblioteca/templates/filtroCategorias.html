@@ -1,12 +1,18 @@
 {% extends 'base.html' %} {% block content %}
 <h3>Búsqueda por Categoría</h3>
-<form method="get">
+<form method="GET">
   {% csrf_token %} {{ form.as_p }}
   <article>
-    <select id="opciones" name="opciones">
-      <option value="" disabled selected>Seleccione una categoría</option>
+    <select name="opcionCategoria">
+      <option value="">Todas las categorías</option>
       {% for categoria in categorias %}
-      <option value="{{ categoria }}">{{ categoria }}</option>
+      <option value="{{ categoria }}" {% if categoria.categoria == categoriaSeleccionada %} selected {% endif %} >{{ categoria }}</option>
+      {% endfor %}
+    </select>
+    <select name="opcionAutor">
+      <option value="">Todas los autores</option>
+      {% for autor in autores %}
+      <option value="{{ autor.nombre }}" {% if autor.nombre == autorSeleccionado %} selected {% endif %} >{{ autor.nombre }}</option>
       {% endfor %}
     </select>
   </article>

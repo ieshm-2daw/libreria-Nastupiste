@@ -77,6 +77,7 @@ WSGI_APPLICATION = 'nastu_site.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -84,6 +85,21 @@ DATABASES = {
     }
 }
 
+'''
+DATABASES = {
+    "default": {
+        "NAME": "libreria_Manuel",
+        "ENGINE": "django.db.backends.mysql",
+        "HOST": "192.168.100.5",
+        "PORT": 3306,
+        "USER": "Manuel",
+        "PASSWORD": "alumnado",
+        "OPTIONS": {
+            "autocommit": True,
+        },
+    }
+}
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

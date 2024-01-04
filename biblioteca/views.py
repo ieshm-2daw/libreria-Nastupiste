@@ -13,6 +13,7 @@ from .forms import *
 class ListaLibros(ListView):
     model = Libro
     template_name = 'lista_libros.html'
+    paginate_by = 4
 
 # queryset=Libro.objects.filter(disponibilidad='disponible')
 
@@ -20,8 +21,8 @@ class ListaLibros(ListView):
         context = super().get_context_data(**kwargs)
         context['libros_disponibles'] = Libro.objects.filter(
             disponibilidad='disponible')
-        context['libros_prestados'] = Libro.objects.filter(
-            disponibilidad='prestado')
+        """context['libros_prestados'] = Libro.objects.filter(
+            disponibilidad='prestado')"""
         return context
 
 
@@ -34,26 +35,26 @@ class ListaBestSellers(ListView):
 class FiltrarCategorias(ListView):
     model = Libro
     template_name = 'filtroCategorias.html'
-    form_class = FiltroGeneroForm
-    queryset = Libro.objects.filter(disponibilidad='disponible')
 
-    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
-
-        categoriaSeleccionada = self.request.GET.get("opciones")
-        for genero_ID in Genero.objects.all():
-            if genero_ID.categoria == categoriaSeleccionada:
-                self.queryset = self.queryset.filter(
-                    genero=genero_ID)
-        """
-        categoria = Genero.objects.filter(
-            categoria=self.request.GET.get('opciones'))
-        self.queryset = self.queryset.filter(genero=categoria)
-        """
-        return super().get(request, *args, **kwargs)
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(disponibilidad='disponible')
+        categoriaSeleccionada = self.request.GET.get('opcionCategoria')
+        autorSeleccionado = self.request.GET.get('opcionAutor')
+        if categoriaSeleccionada:
+            queryset = queryset.filter(
+                genero__categoria__icontains=categoriaSeleccionada)
+        if autorSeleccionado:
+            queryset = queryset.filter(
+                autores__nombre__icontains=autorSeleccionado)
+        return queryset
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['categorias'] = Genero.objects.all()
+        context['autores'] = Autor.objects.all()
+        context['categoriaSeleccionada'] = self.request.GET.get(
+            'opcionCategoria')
+        context['autorSeleccionado'] = self.request.GET.get('opcionAutor')
         return context
 
 
