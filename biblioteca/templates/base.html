@@ -15,6 +15,7 @@
           </li>
         </ul>
         <ul>
+          {% if user.is_authenticated %}
           <li>
             <a href="{% url 'anadir_libro' %}" role="button">Añadir Libro</a>
           </li>
@@ -30,6 +31,23 @@
           <li>
             <a href="{% url 'filtroCategorias' %}" role="button">Buscador</a>
           </li>
+          <li>
+            <a href="{% url 'logout' %}" role="button">Logout</a>
+          </li>
+          {% else %}
+          <li>
+            <a href="{% url 'lista_libros' %}" role="button">Lista de Libros</a>
+          </li>
+          <li>
+            <a href="{% url 'filtroCategorias' %}" role="button">Buscador</a>
+          </li>
+          <li>
+            <a href="{% url 'bestSellers' %}" role="button">Best-Sellers</a>
+          </li>
+          <li>
+            <a href="{% url 'login' %}" role="button">Login</a>
+          </li>
+          {% endif %}
         </ul>
       </nav>
     </header>

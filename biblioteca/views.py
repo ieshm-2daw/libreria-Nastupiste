@@ -7,22 +7,20 @@ from .models import *
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
 from django .urls import reverse_lazy
 from .forms import *
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
 class ListaLibros(ListView):
     model = Libro
     template_name = 'lista_libros.html'
-    paginate_by = 4
-
-# queryset=Libro.objects.filter(disponibilidad='disponible')
+    # queryset=Libro.objects.filter(disponibilidad='disponible')
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['libros_disponibles'] = Libro.objects.filter(
             disponibilidad='disponible')
-        """context['libros_prestados'] = Libro.objects.filter(
-            disponibilidad='prestado')"""
         return context
 
 
@@ -58,7 +56,7 @@ class FiltrarCategorias(ListView):
         return context
 
 
-class ListaMisLibros(ListView):
+class ListaMisLibros(LoginRequiredMixin,ListView):
     model = Prestamo
     template_name = 'mis_libros.html'
 
@@ -71,7 +69,7 @@ class ListaMisLibros(ListView):
         return context
 
 
-class DevolverLibro(View):
+class DevolverLibro(LoginRequiredMixin,View):
     def get(self, request, pk):
         libro_prestado = get_object_or_404(Libro, pk=pk)
         return render(request, 'devolver_libro.html', {'libro': libro_prestado})
@@ -90,7 +88,7 @@ class DevolverLibro(View):
         return redirect('detalle', pk=pk)
 
 
-class ReservarLibro(View):
+class ReservarLibro(LoginRequiredMixin,View):
     def get(self, request, pk):
         libro = get_object_or_404(Libro, pk=pk)
         return render(request, 'reservar_libro.html', {'libro': libro})
@@ -107,7 +105,7 @@ class ReservarLibro(View):
         return render(request, 'detalle.html', {'libro': libro})
 
 
-class CrearLibro(CreateView):
+class CrearLibro(LoginRequiredMixin,CreateView):
     model = Libro
     template_name = 'anadir_libro.html'
     fields = ['titulo', 'autores', 'editorial', 'bestSeller', 'rating', 'fechaPublicacion',
@@ -120,7 +118,7 @@ class DetallesLibro(DetailView):
     template_name = 'detalle.html'
 
 
-class ActualizarLibro(UpdateView):
+class ActualizarLibro(LoginRequiredMixin,UpdateView):
     model = Libro
     template_name = 'editar_libro.html'
     fields = ['titulo', 'autores', 'editorial', 'rating', 'fechaPublicacion',
@@ -128,7 +126,7 @@ class ActualizarLibro(UpdateView):
     success_url = reverse_lazy('lista_libros')
 
 
-class BorrarLibro(DeleteView):
+class BorrarLibro(LoginRequiredMixin,DeleteView):
     model = Libro
     template_name = 'borrar_libro.html'
     success_url = reverse_lazy('lista_libros')
