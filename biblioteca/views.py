@@ -21,6 +21,8 @@ class ListaLibros(ListView):
         context = super().get_context_data(**kwargs)
         context['libros_disponibles'] = Libro.objects.filter(
             disponibilidad='disponible')
+        context['libros_prestados'] = Libro.objects.filter(
+            disponibilidad='prestado')
         return context
 
 
